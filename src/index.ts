@@ -1,8 +1,11 @@
 import app from "./app";
+import config from "./Config/config.index";
+import { initDB } from "./DB";
 
 const main = async () => {
-    app.listen(6000, () => {
-       console.log("running at 6000");
+    initDB();
+    app.listen(config.port, () => {
+       console.log(`running at ${config.port}`);
        
    }) 
 }
