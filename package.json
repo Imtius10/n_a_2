@@ -1,0 +1,25 @@
+{
+  "name": "assigment2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Imtius10/n_a_2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Imtius10/n_a_2/issues"
+  },
+  "homepage": "https://github.com/Imtius10/n_a_2#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "typescript": "^6.0.3"
+  }
+}
