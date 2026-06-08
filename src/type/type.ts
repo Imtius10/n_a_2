@@ -3,7 +3,7 @@ export const UserRole = ["contributor", "maintainer"] as const;
 type Role = typeof UserRole[number];
 
 
- type User = {
+ export type User = {
   id: number;
   name: string;
   email: string;

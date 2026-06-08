@@ -6,6 +6,6 @@ app.use(express.json())
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello from testing");
 })
-app.use("/signup",router)
+app.use("/",router)
 
 export default app;
