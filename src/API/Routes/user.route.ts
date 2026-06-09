@@ -5,4 +5,4 @@ export const router = Router();
 
 
 router.post("/signup", signUp)
-router.get("/login",login)
+router.get("/login", login)

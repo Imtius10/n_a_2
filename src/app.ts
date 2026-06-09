@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express"
-import { router } from "./API/Routes/route";
+import { router } from "./API/Routes/user.route";
 
 const app = express();
 app.use(express.json())

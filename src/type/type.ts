@@ -1,7 +1,7 @@
 export const UserRole = ["contributor", "maintainer"] as const;
 export type IssueType = "bug" | "feature_request";
 export type IssueStatus = "open" | "in_progress" | "resolved";
-type Role = (typeof UserRole)[number];
+export type Role = (typeof UserRole)[number];
 
 export interface IGetIssuesFilters {
   sort: "newest" | "oldest";

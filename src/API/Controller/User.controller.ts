@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { sendError, sendSuccess } from "../../GlobalError/SuccessAndError";
-import { signToken } from "../../Utils/jwt";
+import { signToken, verifyToken } from "../../Utils/jwt";
 import UserService from "../Service/User.Service";
 
 export const signUp = async (req: Request, res: Response) => {
@@ -45,3 +45,5 @@ export const login = async (req: Request, res: Response) => {
     return sendError(res, 500, "Internal Server Error", error);
   }
 };
+
+
