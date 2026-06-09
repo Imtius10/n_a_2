@@ -5,8 +5,8 @@ export type Role = (typeof UserRole)[number];
 
 export interface IGetIssuesFilters {
   sort: "newest" | "oldest";
-  type?: IssueType | undefined; 
-  status?: IssueStatus | undefined; 
+  type?: IssueType;
+  status?: IssueStatus;
 }
 export type User = {
   id: number;
@@ -44,6 +44,6 @@ export interface IssueWithReporter extends Omit<Issue, "reporter_id"> {
 export interface JwtPayload {
   id: number;
   name: string;
+  email:string,
   role: Role;
 }
-
