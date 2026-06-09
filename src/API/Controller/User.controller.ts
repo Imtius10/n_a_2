@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { sendError, sendSuccess } from "../../GlobalError/SuccessAndError";
 import { signToken, verifyToken } from "../../Utils/jwt";
 import UserService from "../Service/User.Service";
+import IssueService from "../Service/Issue.service";
 
 // export const signUp = async (req: Request, res: Response) => {
 //   const user = await UserService.createUser(req.body);
@@ -85,6 +86,36 @@ export const login = async (req: Request, res: Response) => {
         updated_at: user.updated_at,
       },
     });
+  } catch (error) {
+    return sendError(res, 500, "Internal Server Error", error);
+  }
+};
+
+export const updateIssue = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    const issue = await IssueService.getIssueById(id);
+
+    if (!issue) {
+      return sendError(res, 404, "Issue not found");
+    }
+
+    
+    if (req.user.role === "contributor" && issue.reporter_id !== req.user.id) {
+      return sendError(res, 403, "You can only update your own issues");
+    }
+
+    const { title, description, type } = req.body;
+
+    const updated = await IssueService.updateIssue(
+      id,
+      title,
+      description,
+      type,
+    );
+
+    return sendSuccess(res, 200, "Issue updated successfully", updated);
   } catch (error) {
     return sendError(res, 500, "Internal Server Error", error);
   }
