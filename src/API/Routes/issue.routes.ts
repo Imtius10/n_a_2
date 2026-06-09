@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { authorizeRole } from "../../Middleware/auth";
+import { auth, authorizeRole } from "../../Middleware/auth";
+import { createIssue } from "../Controller/Issue.Controller";
 
 export const router = Router();
 
 
-router.use("/", authorizeRole("contributor", "maintainer"),)
+router.use("/createIssue",auth ,authorizeRole("contributor", "maintainer"),createIssue)
 
 
 export const IssueRoute = router

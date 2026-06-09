@@ -3,33 +3,78 @@ import { sendError, sendSuccess } from "../../GlobalError/SuccessAndError";
 import { signToken, verifyToken } from "../../Utils/jwt";
 import UserService from "../Service/User.Service";
 
-export const signUp = async (req: Request, res: Response) => {
-  const user = await UserService.createUser(req.body);
-  if (!user) {
-    return sendError(res, 404, "User profile not found");
-  }
+// export const signUp = async (req: Request, res: Response) => {
+//   const user = await UserService.createUser(req.body);
+//   if (!user) {
+//     return sendError(res, 404, "User profile not found");
+//   }
 
-  sendSuccess(res, 200, "User profile retrieved successfully", user);
+//   sendSuccess(res, 200, "User profile retrieved successfully", user);
+// };
+
+// export const login = async (req: Request, res: Response) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     const user = await UserService.loginValidator(email, password);
+//     console.log(user);
+
+//     if (!user) {
+//       return sendError(res, 400, "invalid password or email");
+//     }
+
+//     const { accessToken, refresToken } = signToken(user);
+//     res.cookie("refreshToken", refresToken, {
+//       sameSite: "lax",
+//       httpOnly: true,
+//       secure: false,
+//     });
+//     const result = {
+//       token: accessToken,
+//       user: {
+//         id: user.id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//         created_at: user.created_at,
+//         updated_at: user.updated_at,
+//       },
+//     };
+//     sendSuccess(res, 200, "Login successful", result);
+//   } catch (error) {
+//     return sendError(res, 500, "Internal Server Error", error);
+//   }
+// };
+
+export const signUp = async (req: Request, res: Response) => {
+  try {
+    const user = await UserService.createUser(req.body);
+
+    return sendSuccess(res, 201, "User registered successfully", user);
+  } catch (error) {
+    return sendError(res, 500, "Internal Server Error", error);
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     const user = await UserService.loginValidator(email, password);
-    console.log(user);
 
     if (!user) {
-      return sendError(res, 400, "invalid password or email");
+      return sendError(res, 401, "Invalid email or password");
     }
 
     const { accessToken, refresToken } = signToken(user);
+
     res.cookie("refreshToken", refresToken, {
-      sameSite: "lax",
       httpOnly: true,
+      sameSite: "lax",
       secure: false,
     });
-    const result = {
+
+    return sendSuccess(res, 200, "Login successful", {
       token: accessToken,
       user: {
         id: user.id,
@@ -39,11 +84,8 @@ export const login = async (req: Request, res: Response) => {
         created_at: user.created_at,
         updated_at: user.updated_at,
       },
-    };
-    sendSuccess(res, 200, "Login successful", result);
+    });
   } catch (error) {
     return sendError(res, 500, "Internal Server Error", error);
   }
 };
-
-
