@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import IssueService from "../Service/Issue.service";
 import { sendError, sendSuccess } from "../../GlobalError/SuccessAndError";
+import type { IGetIssuesFilters } from "../../type/type";
 
 export const createIssue = async (req: Request, res: Response) => {
   try {
@@ -66,6 +67,40 @@ export const deleteIssue = async (req: Request, res: Response) => {
     }
 
     return sendSuccess(res, 200, "Issue deleted successfully", deleted);
+  } catch (error) {
+    return sendError(res, 500, "Internal Server Error", error);
+  }
+};
+
+export const getAllIssues = async (req: Request, res: Response) => {
+  try {
+    const { sort, type, status } = req.query;
+
+    const sortValue = sort === "oldest" ? "oldest" : "newest";
+
+    const typeValue =
+      type === "bug" || type === "feature_request" ? type : undefined;
+
+    const statusValue =
+      status === "open" || status === "in_progress" || status === "resolved"
+        ? status
+        : undefined;
+
+    const filters: IGetIssuesFilters = {
+      sort: sortValue,
+    };
+
+    if (typeValue) {
+      filters.type = typeValue;
+    }
+
+    if (statusValue) {
+      filters.status = statusValue;
+    }
+
+    const issues = await IssueService.getAllIssues(filters);
+
+    return sendSuccess(res, 200, "Issues retrieved successfully", issues);
   } catch (error) {
     return sendError(res, 500, "Internal Server Error", error);
   }
