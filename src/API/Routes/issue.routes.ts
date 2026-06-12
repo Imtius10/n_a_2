@@ -10,24 +10,32 @@ import {
 
 export const router = Router();
 //1
-router.use(
-  "/createIssue",
+router.post(
+  "/issues",
   auth,
   authorizeRole("contributor", "maintainer"),
   createIssue,
 );
 //router.patch("/:id/status", auth, authorizeRole("maintainer"), updateIssue);
 //2
-router.get("/issue/:id", auth,authorizeRole("contributor", "maintainer"),getIssueById);
+router.get("/issues/:id", getIssueById);
 //3
 router.patch(
-  "/issue/:id",
+  "/issues/:id",
   auth,
   authorizeRole("contributor", "maintainer"),
   updateIssue,
 );
 //4
-router.delete("/issue/:id", auth, authorizeRole("maintainer"), deleteIssue);
+router.delete(
+  "/issues/:id",
+  auth,
+  authorizeRole("maintainer"),
+  deleteIssue,
+);
 //5
-router.get("/allissue",auth,authorizeRole("contributor", "maintainer"),getAllIssues);
+router.get(
+  "/issues",
+  getAllIssues,
+);
 export const IssueRoute = router;

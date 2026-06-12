@@ -21,7 +21,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
           next();
         
     } catch (error) {
-        return sendError(res,401,"Invalid access token")
+        return sendError(res,401,"Invalid access token",error)
     }
 }
 

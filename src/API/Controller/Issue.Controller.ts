@@ -34,11 +34,64 @@ export const getIssueById = async (req: Request, res: Response) => {
   }
 };
 
+// export const updateIssue = async (req: Request, res: Response) => {
+//   try {
+//     const id = Number(req.params.id);
+//     const { title, description, type } = req.body;
+
+//     const updated = await IssueService.updateIssue(
+//       id,
+//       title,
+//       description,
+//       type,
+//     );
+
+//     if (!updated) {
+//       return sendError(res, 404, "Issue not found");
+//     }
+
+//     return sendSuccess(res, 200, "Issue updated successfully", updated);
+//   } catch (error) {
+//     return sendError(res, 500, "Internal Server Error", error);
+//   }
+// };
+
+
 export const updateIssue = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const { title, description, type } = req.body;
+    const { id: userId, role: userRole } = req.user; 
 
+    
+    const issue = await IssueService.getIssueById(id);
+
+    if (!issue) {
+      return sendError(res, 404, "Issue not found");
+    }
+
+   
+    if (userRole === "contributor") {
+      
+      if (issue.reporter_id !== userId) {
+        return sendError(
+          res,
+          403,
+          "Forbidden: Contributors can only update their own issues",
+        );
+      }
+
+      
+      if (issue.status !== "open") {
+        return sendError(
+          res,
+          403,
+          "Forbidden: Contributors cannot update an issue that is not open",
+        );
+      }
+    }
+
+   
+    const { title, description, type } = req.body;
     const updated = await IssueService.updateIssue(
       id,
       title,
@@ -46,15 +99,12 @@ export const updateIssue = async (req: Request, res: Response) => {
       type,
     );
 
-    if (!updated) {
-      return sendError(res, 404, "Issue not found");
-    }
-
     return sendSuccess(res, 200, "Issue updated successfully", updated);
   } catch (error) {
     return sendError(res, 500, "Internal Server Error", error);
   }
 };
+
 
 export const deleteIssue = async (req: Request, res: Response) => {
   try {
@@ -102,6 +152,8 @@ export const getAllIssues = async (req: Request, res: Response) => {
 
     return sendSuccess(res, 200, "Issues retrieved successfully", issues);
   } catch (error) {
+    
+    
     return sendError(res, 500, "Internal Server Error", error);
   }
 };

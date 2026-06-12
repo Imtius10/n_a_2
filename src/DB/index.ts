@@ -29,5 +29,5 @@ export const initDB = async () => {
         updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
     )
   `;
-  console.log("db conn");
+ 
 };
