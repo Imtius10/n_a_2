@@ -50,17 +50,31 @@ DevPulse is a role-based issue tracking platform that allows software teams to r
 
 # 📂 Project Structure
 
+# 📂 Project Structure
+
 ```text
-src/
-├── app/
-│   ├── modules/
-│   │   ├── auth/
-│   │   └── issues/
-│   ├── middlewares/
-│   └── routes/
-├── config/
-├── db/
-└── server.ts
+.
+├── dist/
+├── node_modules/
+├── src/
+│   ├── API/
+│   │   ├── Controller/
+│   │   ├── Routes/
+│   │   └── Service/
+│   ├── Config/
+│   ├── DB/
+│   ├── GlobalError/
+│   ├── Middleware/
+│   ├── Utils/
+│   ├── type/
+│   ├── app.ts
+│   └── server.ts
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── tsup.config.ts
+├── vercel.json
+└── README.md
 ```
 
 ---
