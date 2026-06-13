@@ -84,8 +84,8 @@ DevPulse is a role-based issue tracking platform that allows software teams to r
 ## 1. Clone Repository
 
 ```bash
-git clone <repository-url>
-cd devpulse
+git clone https://github.com/Imtius10/n_a_2.git
+cd n_a_2
 ```
 
 ## 2. Install Dependencies
@@ -209,30 +209,30 @@ Maintainer Only.
 
 ## Users Table
 
-| Column | Type | Description |
-|----------|----------|----------|
-| id | SERIAL | Primary Key |
-| name | VARCHAR | User Name |
-| email | VARCHAR | Unique Email |
-| password | TEXT | Hashed Password |
-| role | ENUM | contributor / maintainer |
-| created_at | TIMESTAMP | Creation Time |
-| updated_at | TIMESTAMP | Last Update Time |
+| Column     | Type      | Description              |
+| ---------- | --------- | ------------------------ |
+| id         | SERIAL    | Primary Key              |
+| name       | VARCHAR   | User Name                |
+| email      | VARCHAR   | Unique Email             |
+| password   | TEXT      | Hashed Password          |
+| role       | ENUM      | contributor / maintainer |
+| created_at | TIMESTAMP | Creation Time            |
+| updated_at | TIMESTAMP | Last Update Time         |
 
 ---
 
 ## Issues Table
 
-| Column | Type | Description |
-|----------|----------|----------|
-| id | SERIAL | Primary Key |
-| title | VARCHAR(150) | Issue Title |
-| description | TEXT | Issue Details |
-| type | ENUM | bug / feature_request |
-| status | ENUM | open / in_progress / resolved |
-| reporter_id | INTEGER | User Reference |
-| created_at | TIMESTAMP | Creation Time |
-| updated_at | TIMESTAMP | Last Update Time |
+| Column      | Type         | Description                   |
+| ----------- | ------------ | ----------------------------- |
+| id          | SERIAL       | Primary Key                   |
+| title       | VARCHAR(150) | Issue Title                   |
+| description | TEXT         | Issue Details                 |
+| type        | ENUM         | bug / feature_request         |
+| status      | ENUM         | open / in_progress / resolved |
+| reporter_id | INTEGER      | User Reference                |
+| created_at  | TIMESTAMP    | Creation Time                 |
+| updated_at  | TIMESTAMP    | Last Update Time              |
 
 ---
 
@@ -262,16 +262,16 @@ Maintainer Only.
 
 # 📊 HTTP Status Codes
 
-| Code | Meaning |
-|--------|--------|
-| 200 | OK |
-| 201 | Created |
-| 400 | Bad Request |
-| 401 | Unauthorized |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 409 | Conflict |
-| 500 | Internal Server Error |
+| Code | Meaning               |
+| ---- | --------------------- |
+| 200  | OK                    |
+| 201  | Created               |
+| 400  | Bad Request           |
+| 401  | Unauthorized          |
+| 403  | Forbidden             |
+| 404  | Not Found             |
+| 409  | Conflict              |
+| 500  | Internal Server Error |
 
 ---
 
