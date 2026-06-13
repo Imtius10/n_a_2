@@ -1,153 +1,285 @@
-# 🚼 DevPulse – Internal Tech Issue & Feature Tracker
+# 🚀 DevPulse – Internal Tech Issue & Feature Tracker
 
-DevPulse is a collaborative platform designed for software teams to efficiently report bugs, suggest features, and manage issue workflows in a structured and scalable way. It provides authentication, role-based access control, and a clean issue tracking system built on PostgreSQL with raw SQL queries.
+**Live URL:** https://jwt3-theta.vercel.app/
 
----
-
-## Overview
-
-DevPulse is built using:
-
-Node.js (LTS 24+), TypeScript, Express.js, PostgreSQL, and the native pg driver. It strictly uses raw SQL (`pool.query`) without ORMs or query builders. Authentication is handled using JWT, and passwords are securely hashed using bcrypt.
+DevPulse is a role-based issue tracking platform that allows software teams to report bugs, request features, and manage issue workflows efficiently. The application provides secure authentication, authorization, and issue management using Node.js, Express.js, TypeScript, PostgreSQL, and JWT.
 
 ---
 
-## ⚙️ Core Principles
+# 📌 Features
 
-- Raw SQL only (no ORM / no query builder)
-- Secure authentication using JWT
-- Passwords hashed using bcrypt (salt rounds 8–12)
-- Role-based access control (RBAC)
-- Clean separation of contributor and maintainer permissions
-- No sensitive data exposed in responses
-
----
-
-## 👥 User Roles
-
-### Contributor
-
-- Register and login
-- Create issues (bug / feature_request)
-- View all issues
-- Update only their own issues (if allowed)
-
-### Maintainer
-
-- All contributor permissions
-- Update any issue
-- Delete any issue
-- Manage issue status workflow (open → in_progress → resolved)
+- User Registration & Login
+- JWT Authentication
+- Role-Based Access Control (Contributor & Maintainer)
+- Create Issues
+- View All Issues
+- View Single Issue
+- Update Issues
+- Delete Issues (Maintainer Only)
+- Issue Status Management
+- Filtering & Sorting Issues
+- Secure Password Hashing with bcrypt
+- PostgreSQL Database Integration
+- Raw SQL Queries (No ORM)
 
 ---
 
-## 🔐 Authentication System (JWT)
+# 🛠 Tech Stack
 
-JWT-based authentication flow:
+### Backend
 
-User sends credentials → Server validates using bcrypt → Server generates JWT → Client stores token → Token sent in Authorization header → Server verifies token before granting access.
+- Node.js
+- Express.js
+- TypeScript
 
-Security rules:
+### Database
 
-- Passwords are never returned or logged
-- Protected routes require valid JWT
-- Role-based authorization is enforced on every request
+- PostgreSQL
+- pg Driver
 
----
+### Authentication & Security
 
-## Database Schema
+- JWT (JSON Web Token)
+- bcrypt
 
-### Users Table
+### Deployment
 
-- id → auto-increment primary key
-- name → full name (required)
-- email → unique email (required)
-- password → hashed password (never returned)
-- role → contributor | maintainer (default: contributor)
-- created_at → timestamp
-- updated_at → timestamp
-
-### Issues Table
-
-- id → auto-increment primary key
-- title → max 150 characters
-- description → minimum 20 characters
-- type → bug | feature_request
-- status → open | in_progress | resolved (default: open)
-- reporter_id → user reference handled in application logic
-- created_at → timestamp
-- updated_at → timestamp
+- Vercel
 
 ---
 
-## API Endpoints
+# 📂 Project Structure
 
-### Authentication
-
-POST /api/auth/signup  
-Creates a new user account with name, email, password, and role.
-
-POST /api/auth/login  
-Authenticates user and returns JWT token + user data.
-
----
-
-### Issues
-
-POST /api/issues  
-Creates a new issue (requires JWT).
-
-GET /api/issues  
-Fetches all issues with optional filters:
-
-- sort = newest | oldest
-- type = bug | feature_request
-- status = open | in_progress | resolved
-
-GET /api/issues/:id  
-Fetch single issue by ID.
-
-PATCH /api/issues/:id  
-Update issue fields (role-based restrictions apply).
-
-DELETE /api/issues/:id  
-Delete issue (maintainer only).
+```text
+src/
+├── app/
+│   ├── modules/
+│   │   ├── auth/
+│   │   └── issues/
+│   ├── middlewares/
+│   └── routes/
+├── config/
+├── db/
+└── server.ts
+```
 
 ---
 
-## Response Format
+# ⚙️ Setup Instructions
 
-### Success Response
+## 1. Clone Repository
 
+```bash
+git clone <repository-url>
+cd devpulse
+```
+
+## 2. Install Dependencies
+
+```bash
+npm install
+```
+
+## 3. Create Environment Variables
+
+Create a `.env` file:
+
+```env
+PORT=5000
+
+DATABASE_URL=your_postgresql_connection_string
+
+JWT_SECRET=your_secret_key
+
+BCRYPT_SALT_ROUNDS=10
+```
+
+## 4. Run Development Server
+
+```bash
+npm run dev
+```
+
+## 5. Build Project
+
+```bash
+npm run build
+```
+
+## 6. Start Production Server
+
+```bash
+npm start
+```
+
+---
+
+# 🔐 Authentication
+
+Protected routes require a JWT token in the request header:
+
+```http
+Authorization: Bearer <token>
+```
+
+---
+
+# 📡 API Endpoint List
+
+## Authentication
+
+### Register User
+
+```http
+POST /api/auth/signup
+```
+
+### Login User
+
+```http
+POST /api/auth/login
+```
+
+---
+
+## Issues
+
+### Create Issue
+
+```http
+POST /api/issues
+```
+
+Requires Authentication.
+
+### Get All Issues
+
+```http
+GET /api/issues
+```
+
+Optional Query Parameters:
+
+```http
+?sort=newest
+?sort=oldest
+?type=bug
+?type=feature_request
+?status=open
+?status=in_progress
+?status=resolved
+```
+
+### Get Single Issue
+
+```http
+GET /api/issues/:id
+```
+
+### Update Issue
+
+```http
+PATCH /api/issues/:id
+```
+
+### Delete Issue
+
+```http
+DELETE /api/issues/:id
+```
+
+Maintainer Only.
+
+---
+
+# 🗄 Database Schema Summary
+
+## Users Table
+
+| Column | Type | Description |
+|----------|----------|----------|
+| id | SERIAL | Primary Key |
+| name | VARCHAR | User Name |
+| email | VARCHAR | Unique Email |
+| password | TEXT | Hashed Password |
+| role | ENUM | contributor / maintainer |
+| created_at | TIMESTAMP | Creation Time |
+| updated_at | TIMESTAMP | Last Update Time |
+
+---
+
+## Issues Table
+
+| Column | Type | Description |
+|----------|----------|----------|
+| id | SERIAL | Primary Key |
+| title | VARCHAR(150) | Issue Title |
+| description | TEXT | Issue Details |
+| type | ENUM | bug / feature_request |
+| status | ENUM | open / in_progress / resolved |
+| reporter_id | INTEGER | User Reference |
+| created_at | TIMESTAMP | Creation Time |
+| updated_at | TIMESTAMP | Last Update Time |
+
+---
+
+# 📄 Response Format
+
+## Success Response
+
+```json
 {
-success: true,
-message: "Operation successful",
-data: {}
+  "success": true,
+  "message": "Operation successful",
+  "data": {}
 }
+```
 
-### Error Response
+## Error Response
 
+```json
 {
-success: false,
-message: "Error message",
-errors: {}
+  "success": false,
+  "message": "Error message",
+  "errors": {}
 }
+```
 
 ---
 
-## HTTP Status Codes
+# 📊 HTTP Status Codes
 
-200 → OK  
-201 → Created  
-400 → Bad Request  
-401 → Unauthorized  
-403 → Forbidden  
-404 → Not Found  
-409 → Conflict  
-500 → Internal Server Error
+| Code | Meaning |
+|--------|--------|
+| 200 | OK |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 409 | Conflict |
+| 500 | Internal Server Error |
 
 ---
 
-## 🚀 DevPulse Vision
+# 👥 User Roles
 
-DevPulse is designed to simplify collaboration between developers by providing a structured, secure, and scalable issue tracking system. It ensures clear ownership of issues, controlled workflows, and secure authentication across all operations.
+## Contributor
+
+- Register & Login
+- Create Issues
+- View Issues
+- Update Own Issues
+
+## Maintainer
+
+- All Contributor Permissions
+- Update Any Issue
+- Delete Any Issue
+- Manage Issue Status
+
+---
+
+# 🎯 Project Goal
+
+DevPulse helps development teams track bugs and feature requests in a structured environment. By combining secure authentication, role-based authorization, and issue workflow management, it provides a scalable foundation for internal project collaboration.
