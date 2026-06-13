@@ -103,9 +103,8 @@ PORT=5000
 
 DATABASE_URL=your_postgresql_connection_string
 
-JWT_SECRET=your_secret_key
-
-BCRYPT_SALT_ROUNDS=10
+JWT_SECRET=
+JWT_REFRESH=
 ```
 
 ## 4. Run Development Server
