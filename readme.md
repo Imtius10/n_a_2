@@ -1,4 +1,4 @@
-# 🚀 DevPulse – Internal Tech Issue & Feature Tracker
+# 🚀 – Internal Tech Issue & Feature Tracker
 
 **Live URL:** https://jwt3-theta.vercel.app/
 
