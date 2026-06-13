@@ -8,6 +8,9 @@ app.use(cookieparser())
 // app.get("/", (req: Request, res: Response) => {
 //     res.send("Hello from testing");
 // })
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
 app.use("/api", router)
 app.use("/api",IssueRoute)
 

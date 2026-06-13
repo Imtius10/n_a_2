@@ -1,5 +1,5 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import config from "../Config/config.index";
+import config from "../Config";
 import type { RUser } from "../type/type";
 
 export const verifyToken = (token: string, type: "access" | "refresh") => {
